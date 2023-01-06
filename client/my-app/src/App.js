@@ -1,46 +1,21 @@
-
-import './App.css';
-import {useState, useEffect} from "react";
-import axios from "axios"
-function App() {
-  const [listOfUsers, setListOfUsers] = useState([]);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [username, setUsername] = useState("");
-  useEffect(() =>{
-    axios.get("http://localhost:8000/getUsers")
-    .then((response) => {
-      console.log(response.data);
-      setListOfUsers(response.data)
-    });
-  }, [])
-  const createUser = () =>{
-    axios.post("http://localhost:8000/addUser", {name:name, age: 0, username: ""}).then((response) =>{
-      alert("User created");
-    });
-
-  }
-  return (
+import {Routes, Route } from "react-router-dom";
+import Register from "./components/register";
+import Login from "./components/login";
+import Navbar from "./components/Navbar";
+import Dashboard from "./components/Dashboard";
+import Logout from "./components/Logout";
+function App(){
+  return(
     <div>
-      <div className = "usersDisplay">
-        {listOfUsers.map((user) =>{
-          return (
-            <div>
-              <h1>Name: {user.name}</h1>
-              <h1>Age: {user.age}</h1>
-              <h1>Username: {user.username}</h1>
-            </div>
-          );
-        })}
-      </div>
-    <div>
-      <input type = "text" placeholder = "Name " onChange = {(event) => {setName(event.target.value)}}/>
-      <input type = "text" placeholder = "Age "onChange = {(event) => {setAge(event.target.value)}}/>
-      <input type = "text" placeholder = "Username "/>
-      <button onClick = {createUser}>Create User</button>
+      <Navbar />
+      <Routes>
+          <Route exact path = "/login" element = {<Login />} />
+          <Route exact path = "/register" element = {<Register />} />
+          <Route path = "/dashboard" element = {<Dashboard />} />
+          <Route path = "/logout" element = {< Logout/>} />
+      </Routes>
     </div>
-    </div>
+    
   );
 }
-
 export default App;
